@@ -52,6 +52,8 @@ export default function SearchBox({ children }) {
     <div>
       <input
         type="search"
+        name="q"
+        id="dish-search"
         className="search-input"
         placeholder="Search dishes…"
         aria-label="Search dishes"

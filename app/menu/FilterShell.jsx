@@ -12,7 +12,12 @@ export default function FilterShell({ children }) {
   return (
     <div data-budget-only={budgetOnly}>
       <label className="filter">
-        <input type="checkbox" checked={budgetOnly} onChange={(e) => setBudgetOnly(e.target.checked)} /> Under $10 only
+        <input 
+          type="checkbox"
+          name="budget-only" 
+          checked={budgetOnly} 
+          onChange={(e) => setBudgetOnly(e.target.checked)} /> 
+          Under $10 only
       </label>
       {children}
     </div>
