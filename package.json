@@ -1,0 +1,21 @@
+{
+  "name": "addis-eats",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "check:api": "bash scripts/check-api.sh",
+    "test:auth": "node --test scripts/safe-next.test.mjs",
+    "perf": "node scripts/lighthouse.mjs",
+    "check:seo": "node scripts/check-seo.mjs"
+  },
+  "dependencies": {
+    "next": "^15.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "swr": "^2.2.5",
+    "zod": "^3.23.8"
+  }
+}

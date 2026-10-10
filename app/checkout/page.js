@@ -1,0 +1,47 @@
+import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { getDish } from '@/lib/dishes';
+import { CART_COOKIE, parseCart } from '@/lib/cart';
+import { CheckoutForm } from './CheckoutForm';
+import { NO_INDEX } from '@/lib/seo';
+
+export const metadata = {
+  title: 'Checkout',
+  description: 'Enter your delivery details and place your order.',
+  robots: NO_INDEX, // private: also excluded in robots.js
+};
+
+// Forced dynamic: checkout must never be served from a cached/prerendered page.
+// The read that requires it is cookies() below. The cart lives in the
+// visitor's "cart" cookie, which only exists at request time, so the result
+// differs per visitor and cannot be computed at build time.
+export const dynamic = 'force-dynamic';
+
+export default async function CheckoutPage() {
+  const cookieStore = await cookies();
+  const items = parseCart(cookieStore.get(CART_COOKIE)?.value);
+  const lines = Object.entries(items)
+    .map(([id, qty]) => ({ dish: getDish(id), qty }))
+    .filter((l) => l.dish);
+  const total = lines.reduce((sum, l) => sum + l.dish.price * l.qty, 0);
+
+  return (
+    <div>
+      <h1>Checkout</h1>
+      {lines.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <>
+          <ul>
+            {lines.map((l) => (
+              <li key={l.dish.id}>{l.dish.name} × {l.qty} — ${l.dish.price * l.qty}</li>
+            ))}
+          </ul>
+          <p><strong>Total: ${total}</strong></p>
+          <CheckoutForm />
+        </>
+      )}
+      <Link href="/cart">← Back to cart</Link>
+    </div>
+  );
+}
