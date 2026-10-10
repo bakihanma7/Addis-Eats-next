@@ -16,7 +16,7 @@ export default function HeroStrip() {
         const dish = getDish(id);
         return (
           <figure className="strip-photo" key={id}>
-            <Image src={dish.image} alt={dish.alt} fill sizes="(max-width: 720px) 56vw, 25vw" priority={i === 0} />
+            <Image src={dish.image} alt={dish.alt} fill sizes="(max-width: 720px) 56vw, 25vw" priority={i === 0} loading={i === 0 ? undefined : 'eager'} />
           </figure>
         );
       })}
