@@ -65,20 +65,22 @@ export default function SearchBox({ children }) {
         <div className={isValidating ? 'results is-updating' : 'results'} aria-live="polite" aria-busy={isValidating}>
           {error && <p className="field-error">Search failed. Try again.</p>}
           {!data && !error && <p className="muted">Searching…</p>}
-          {data && data.total === 0 && <p>No dishes match “{term}”.</p>}
+          {data && data.total === 0 && <p className="empty">No dishes match “{term}”.</p>}
           {data && data.total > 0 && (
             <>
-              <ul>
-                {data.dishes.map((d) => (
-                  <DishCard key={d.id} dish={d}>
-                    <AddToCartButton id={d.id} />
-                  </DishCard>
-                ))}
-              </ul>
+              <div className="menu-section menu-section--bare">
+                <ul className="menu-list">
+                  {data.dishes.map((d) => (
+                    <DishCard key={d.id} dish={d}>
+                      <AddToCartButton id={d.id} name={d.name} />
+                    </DishCard>
+                  ))}
+                </ul>
+              </div>
               <div className="pager">
-                <button disabled={data.page <= 1} onClick={() => setPageState({ term, n: data.page - 1 })}>Previous</button>
+                <button type="button" className="btn btn-sm" disabled={data.page <= 1} onClick={() => setPageState({ term, n: data.page - 1 })}>Previous</button>
                 <span>Page {data.page} of {data.totalPages}</span>
-                <button disabled={data.page >= data.totalPages} onClick={() => setPageState({ term, n: data.page + 1 })}>Next</button>
+                <button type="button" className="btn btn-sm" disabled={data.page >= data.totalPages} onClick={() => setPageState({ term, n: data.page + 1 })}>Next</button>
               </div>
             </>
           )}

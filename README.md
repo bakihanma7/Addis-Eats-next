@@ -17,7 +17,7 @@ Authentication: see `AUTH.md` (demo accounts, layers, how to break it). `middlew
 See `BOUNDARY.md` for which components are server and which are client, `STRATEGY.md` for each route's rendering strategy and `BUILD_OUTPUT.md` for the recorded build.
 
 Try these:
-- `/menu` — sidebar renders first, dishes stream in behind a skeleton
+- `/menu` — category row renders first, dishes stream in behind a skeleton
 - `/menu/broken` — forces `error.js`
 - `/menu/999` — `notFound()` renders `menu/not-found.js`
 - `/nope` — global 404
@@ -51,10 +51,20 @@ Demo logins are in `AUTH.md`.
 ## Search and sharing
 See `SEO.md`: metadata, title template, per-dish social images, JSON-LD, sitemap, robots. Set `SITE_URL` in production, then run `BASE=https://your-site npm run check:seo`.
 
+## Design
+The UI follows the "Printed Menu" mockup: warm paper background, ink-black text, one rust accent.
+Newsreader (serif) carries the voice; Inter is only used for small tracked-out capitals. Both load through
+`next/font` in `app/layout.js` as `--font-serif` / `--font-sans`. All colours, widths and spacing are CSS
+variables at the top of `app/globals.css`, so a re-theme is a change to that one block.
+The home page is the hero, a photo strip and the full menu; `/menu` adds search, the under-$10 filter and the category row.
+
 ## Project tree
 ```
 app/
-  layout.js            root shell (html, body, header, footer, Providers)
+  layout.js            root shell (html, body, fonts, header, footer, Providers)
+  globals.css          the whole design: tokens, header/footer, menu rows, forms (see Design below)
+  hero-strip.jsx       home page photo strip
+  status-badge.jsx     order status dot + label
   providers.jsx        client: cart context
   cart-ui.jsx          client leaves: CartBadge, AddToCartButton, CartContents
   actions.js           "use server": signIn, signOut, placeOrder, cancelOrder
@@ -69,13 +79,13 @@ app/
     page.js            /checkout (dynamic, reads cart cookie)
     CheckoutForm.jsx   client: useActionState form -> placeOrder
   menu/
-    layout.js          persistent category sidebar
+    layout.js          persistent category row (CategoryNav)
     page.js            /menu
     loading.js  error.js  not-found.js        special files
     category/[slug]/page.js                   /menu/category/mains|sides|drinks
     [id]/page.js                              /menu/1 ... /menu/7
     broken/page.js                            forces error.js
-    CategorySidebar.js DishList.js DishListSkeleton.js FilterShell.jsx SidebarLink.jsx
+    CategoryNav.js CategoryLink.jsx DishCard.jsx DishList.js DishListSkeleton.js FilterShell.jsx
     SearchBox.jsx      client: debounced search + paging with SWR
   orders/
     page.js            /orders

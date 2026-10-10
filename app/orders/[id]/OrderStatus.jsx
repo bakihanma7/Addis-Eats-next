@@ -2,7 +2,8 @@
 
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
-import { STATUS_LABELS, isTerminal } from '@/lib/status';
+import { isTerminal } from '@/lib/status';
+import { StatusBadge } from '../../status-badge';
 import { CancelOrderButton } from './CancelOrderButton';
 
 // Seeded by the server page: `initialOrder` is the order as the server just
@@ -24,9 +25,9 @@ export function OrderStatus({ initialOrder }) {
   const { status } = data.order;
 
   return (
-    <div>
+    <div className="status-panel">
       <p aria-live="polite">
-        Status: <strong>{STATUS_LABELS[status] ?? status}</strong>
+        <StatusBadge status={status} />
       </p>
       {!isTerminal(status) && <p className="muted">Checking for updates every 5 seconds.</p>}
       {error && (

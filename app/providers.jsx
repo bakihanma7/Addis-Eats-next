@@ -32,7 +32,7 @@ export function Providers({ children }) {
   const clear = () => setItems({});
   const count = Object.values(items).reduce((a, b) => a + b, 0);
 
-  return <CartContext.Provider value={{ items, add, remove, clear, count }}>{children}</CartContext.Provider>;
+  return <CartContext.Provider value={{ items, add, remove, clear, count, ready: hydrated }}>{children}</CartContext.Provider>;
 }
 
 export function useCart() {

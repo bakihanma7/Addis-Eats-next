@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { listAllOrders } from '@/lib/orders';
 import { getSession } from '@/lib/session';
-import { STATUS_LABELS } from '@/lib/status';
+import { StatusBadge } from '../status-badge';
 import { NO_INDEX } from '@/lib/seo';
 
 export const metadata = {
@@ -23,18 +23,25 @@ export default async function KitchenPage() {
   const orders = listAllOrders();
 
   return (
-    <div>
-      <h1>Kitchen</h1>
+    <div className="page page-wide">
+      <header className="page-head">
+        <p className="eyebrow">Staff only</p>
+        <h1>Kitchen</h1>
+      </header>
       {orders.length === 0 ? (
-        <p>No orders yet.</p>
+        <p className="empty">No orders yet.</p>
       ) : (
-        <ul>
+        <ul className="tickets">
           {orders.map((o) => (
-            <li key={o.id}>
-              <strong>{STATUS_LABELS[o.status]}</strong> — {new Date(o.createdAt).toLocaleString('en-US')} — {o.customer.name}, {o.customer.address}
-              <ul>
+            <li key={o.id} className="ticket">
+              <div className="ticket-head">
+                <StatusBadge status={o.status} />
+                <span className="ticket-time">{new Date(o.createdAt).toLocaleString('en-US')}</span>
+              </div>
+              <p className="ticket-who">{o.customer.name}, {o.customer.address}</p>
+              <ul className="ticket-lines">
                 {o.lines.map((l) => (
-                  <li key={l.dishId}>{l.qty} × {l.name}</li>
+                  <li key={l.dishId}><span>{l.qty} ×</span>{l.name}</li>
                 ))}
               </ul>
               {o.customer.notes && <p className="muted">Note: {o.customer.notes}</p>}

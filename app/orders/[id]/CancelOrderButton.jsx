@@ -15,7 +15,7 @@ export function CancelOrderButton({ orderId, onCancelled }) {
 
   return (
     <form action={formAction}>
-      <button type="submit" disabled={pending}>{pending ? 'Cancelling…' : 'Cancel order'}</button>
+      <button type="submit" className="btn btn-sm" disabled={pending}>{pending ? 'Cancelling…' : 'Cancel order'}</button>
       {state.status === 'error' && <p className="field-error">{state.message}</p>}
     </form>
   );

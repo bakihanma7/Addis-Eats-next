@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { listOrdersForUser } from '@/lib/orders';
 import { getSession } from '@/lib/session';
-import { STATUS_LABELS } from '@/lib/status';
+import { StatusBadge } from '../status-badge';
 import { NO_INDEX } from '@/lib/seo';
 
 export const metadata = {
@@ -21,18 +21,25 @@ export default async function OrdersPage() {
   const orders = listOrdersForUser(session.userId);
 
   return (
-    <div>
-      <h1>Your orders</h1>
+    <div className="page page-narrow">
+      <header className="page-head">
+        <p className="eyebrow">Order history</p>
+        <h1>Your orders</h1>
+      </header>
       {orders.length === 0 ? (
-        <p>No orders yet. <Link href="/menu">Browse the menu</Link></p>
+        <div className="empty">
+          <p>No orders yet.</p>
+          <Link href="/menu" className="btn">Browse the menu</Link>
+        </div>
       ) : (
-        <ul>
+        <ul className="order-list">
           {orders.map((o) => (
             <li key={o.id}>
-              <Link href={`/orders/${o.id}`}>
-                {new Date(o.createdAt).toLocaleString('en-US')}
-              </Link>{' '}
-              — ${o.total} — <strong>{STATUS_LABELS[o.status]}</strong>
+              <Link href={`/orders/${o.id}`} className="order-row">
+                <span className="order-date">{new Date(o.createdAt).toLocaleString('en-US')}</span>
+                <span className="order-total">{`$${o.total}`}</span>
+                <StatusBadge status={o.status} />
+              </Link>
             </li>
           ))}
         </ul>

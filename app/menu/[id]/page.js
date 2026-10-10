@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
-import { dishes, getDish } from '@/lib/dishes';
+import Link from 'next/link';
+import { categories, dishes, getDish } from '@/lib/dishes';
 import { AddToCartButton } from '../../cart-ui';
 import { DishPhoto } from '../DishCard';
 import { JsonLd } from '../../json-ld';
@@ -25,17 +26,26 @@ export default async function DishPage({ params }) {
 
   if (!dish) notFound();
 
+  const category = categories.find((c) => c.label === dish.category);
+
   return (
-    <div>
+    <article>
       {/* Structured data from the same `dish` object rendered below. */}
       <JsonLd data={dishJsonLd(dish)} />
-      <p>Dish id: {id}</p>
-      <h1>{dish.name}</h1>
+      <header className="page-head">
+        <p className="eyebrow">
+          {category ? <Link href={`/menu/category/${category.slug}`}>{dish.category}</Link> : dish.category}
+        </p>
+        <h1>{dish.name}</h1>
+      </header>
       {/* The one largest above-the-fold image on this page, so the only priority one. */}
       <DishPhoto dish={dish} variant="hero" priority />
-      <p>{dish.description}</p>
-      <p><strong>${dish.price}</strong></p>
-      <AddToCartButton id={id} />
-    </div>
+      <div className="dish-detail-body">
+        <p className="dish-detail-desc">{dish.description}</p>
+        <p className="dish-detail-price">{`$${dish.price}`}</p>
+        <AddToCartButton id={id} name={dish.name} size="lg" />
+      </div>
+      <p className="back-link center"><Link href="/menu">← Back to the menu</Link></p>
+    </article>
   );
 }

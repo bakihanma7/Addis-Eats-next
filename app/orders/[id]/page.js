@@ -25,18 +25,28 @@ export default async function OrderPage({ params }) {
   if (!order) notFound();
 
   return (
-    <div>
-      <h1>Your order</h1>
+    <div className="page page-narrow">
+      <header className="page-head">
+        <p className="eyebrow">Placed {new Date(order.createdAt).toLocaleString('en-US')}</p>
+        <h1>Your order</h1>
+      </header>
       <OrderStatus initialOrder={{ id: order.id, status: order.status }} />
-      <p>Placed {new Date(order.createdAt).toLocaleString('en-US')}</p>
-      <ul>
+      <ul className="receipt">
         {order.lines.map((l) => (
-          <li key={l.dishId}>{l.name} × {l.qty} — ${l.price * l.qty}</li>
+          <li key={l.dishId}>
+            <span className="receipt-name">{l.name}</span>
+            <span className="receipt-qty">× {l.qty}</span>
+            <span className="leader" aria-hidden="true" />
+            <span className="receipt-price">{`$${l.price * l.qty}`}</span>
+          </li>
         ))}
       </ul>
-      <p><strong>Total: ${order.total}</strong></p>
-      <p>Delivering to {order.customer.name}, {order.customer.address}</p>
-      <p><Link href="/orders">← All orders</Link></p>
+      <p className="receipt-total">
+        <span>Total</span>
+        <strong>{`$${order.total}`}</strong>
+      </p>
+      <p className="muted center" style={{ marginTop: '2rem' }}>Delivering to {order.customer.name}, {order.customer.address}</p>
+      <p className="back-link"><Link href="/orders">← All orders</Link></p>
     </div>
   );
 }

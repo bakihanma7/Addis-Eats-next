@@ -15,8 +15,12 @@ export const revalidate = 60;
 
 export default function MenuPage() {
   return (
-    <div>
-      <h1>Menu</h1>
+    <>
+      <header className="page-head">
+        <p className="eyebrow">Ethiopian food, delivered</p>
+        <h1>Menu</h1>
+        <p className="lede">A short menu of stews, sides and drinks. Everything served with injera.</p>
+      </header>
       <SearchBox>
         <FilterShell>
           <Suspense fallback={<DishListSkeleton />}>
@@ -24,6 +28,6 @@ export default function MenuPage() {
           </Suspense>
         </FilterShell>
       </SearchBox>
-    </div>
+    </>
   );
 }

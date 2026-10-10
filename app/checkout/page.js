@@ -26,22 +26,37 @@ export default async function CheckoutPage() {
   const total = lines.reduce((sum, l) => sum + l.dish.price * l.qty, 0);
 
   return (
-    <div>
-      <h1>Checkout</h1>
+    <div className="page page-narrow">
+      <header className="page-head">
+        <p className="eyebrow">Almost there</p>
+        <h1>Checkout</h1>
+      </header>
       {lines.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <div className="empty">
+          <p>Your cart is empty.</p>
+          <Link href="/menu" className="btn">Browse the menu</Link>
+        </div>
       ) : (
         <>
-          <ul>
+          <h2 className="section-label">Your order</h2>
+          <ul className="receipt">
             {lines.map((l) => (
-              <li key={l.dish.id}>{l.dish.name} × {l.qty} — ${l.dish.price * l.qty}</li>
+              <li key={l.dish.id}>
+                <span className="receipt-name">{l.dish.name}</span>
+                <span className="receipt-qty">× {l.qty}</span>
+                <span className="leader" aria-hidden="true" />
+                <span className="receipt-price">{`$${l.dish.price * l.qty}`}</span>
+              </li>
             ))}
           </ul>
-          <p><strong>Total: ${total}</strong></p>
+          <p className="receipt-total">
+            <span>Total</span>
+            <strong>{`$${total}`}</strong>
+          </p>
           <CheckoutForm />
         </>
       )}
-      <Link href="/cart">← Back to cart</Link>
+      <p className="back-link"><Link href="/cart">← Back to cart</Link></p>
     </div>
   );
 }

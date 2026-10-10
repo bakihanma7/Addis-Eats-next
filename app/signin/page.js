@@ -21,9 +21,12 @@ export default async function SignInPage({ searchParams }) {
   if (await getSession()) redirect(next);
 
   return (
-    <div>
-      <h1>Sign in</h1>
-      {next !== '/' && <p className="muted">Sign in to continue.</p>}
+    <div className="page page-form">
+      <header className="page-head">
+        <p className="eyebrow">Welcome back</p>
+        <h1>Sign in</h1>
+        {next !== '/' && <p className="lede">Sign in to continue.</p>}
+      </header>
       <form action={signIn} className="order-form">
         <input type="hidden" name="next" value={next} />
         <label>
@@ -35,9 +38,9 @@ export default async function SignInPage({ searchParams }) {
           <input name="password" type="password" autoComplete="current-password" required aria-invalid={!!error} />
         </label>
         {error && <p className="field-error" role="alert">Email or password is incorrect.</p>}
-        <button type="submit">Sign in</button>
+        <button type="submit" className="btn btn-solid btn-lg">Sign in</button>
       </form>
-      <p className="muted">
+      <p className="muted" style={{ marginTop: '2rem' }}>
         Demo accounts: abel@example.com / abel-password, selam@example.com / selam-password,
         kitchen@addis-eats.test / kitchen-password (staff).
       </p>

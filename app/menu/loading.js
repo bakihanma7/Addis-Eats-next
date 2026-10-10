@@ -1,8 +1,10 @@
-// Shown inside the menu layout (sidebar stays put) while a menu segment loads.
+// Shown inside the menu layout (the category row stays put) while a menu segment loads.
 export default function Loading() {
   return (
-    <div>
-      <h1>Menu</h1>
+    <div aria-busy="true">
+      <header className="page-head">
+        <h1>Menu</h1>
+      </header>
       <div className="skeleton" />
       <div className="skeleton" />
       <div className="skeleton" />

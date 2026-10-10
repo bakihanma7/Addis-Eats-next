@@ -25,13 +25,16 @@ export default async function CategoryPage({ params }) {
   if (!category) notFound();
 
   return (
-    <div>
-      <h1>{category.label}</h1>
+    <>
+      <header className="page-head">
+        <p className="eyebrow">From the menu</p>
+        <h1>{category.label}</h1>
+      </header>
       <FilterShell>
         <Suspense fallback={<DishListSkeleton />}>
           <DishList categoryLabel={category.label} />
         </Suspense>
       </FilterShell>
-    </div>
+    </>
   );
 }

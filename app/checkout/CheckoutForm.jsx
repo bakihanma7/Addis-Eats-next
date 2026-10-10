@@ -25,7 +25,7 @@ export function CheckoutForm() {
   // With JavaScript disabled the effect above never runs, so show a plain link.
   if (state.status === 'success') {
     return (
-      <p>
+      <p className="empty">
         Order placed. <Link href={`/orders/${state.orderId}`}>View your order</Link>
       </p>
     );
@@ -36,7 +36,7 @@ export function CheckoutForm() {
 
   return (
     <form action={formAction} className="order-form" noValidate>
-      <h2>Delivery details</h2>
+      <h2 className="section-label">Delivery details</h2>
 
       <label>
         Name
@@ -72,7 +72,7 @@ export function CheckoutForm() {
         <p className="field-error">{state.formErrors[0]}</p>
       )}
 
-      <button type="submit" disabled={pending}>
+      <button type="submit" className="btn btn-solid btn-lg" disabled={pending}>
         {pending ? 'Placing order…' : 'Place order'}
       </button>
     </form>

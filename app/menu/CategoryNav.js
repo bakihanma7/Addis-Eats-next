@@ -1,20 +1,20 @@
 import { categories } from '@/lib/dishes';
-import SidebarLink from './SidebarLink';
+import CategoryLink from './CategoryLink';
 
 // Server component: the list and the category data stay out of the client bundle.
-export default function CategorySidebar() {
+// A quiet row of links under the site header, like the section index of a printed menu.
+export default function CategoryNav() {
   const links = [{ href: '/menu', label: 'All' }, ...categories.map((c) => ({ href: `/menu/category/${c.slug}`, label: c.label }))];
 
   return (
-    <aside className="sidebar">
-      <h2>Categories</h2>
+    <nav className="category-nav" aria-label="Menu categories">
       <ul>
         {links.map((l) => (
           <li key={l.href}>
-            <SidebarLink href={l.href}>{l.label}</SidebarLink>
+            <CategoryLink href={l.href}>{l.label}</CategoryLink>
           </li>
         ))}
       </ul>
-    </aside>
+    </nav>
   );
 }

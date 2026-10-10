@@ -15,13 +15,17 @@ export function AuthNav() {
   const { data } = useSWR(['/api/session', pathname], ([url]) => fetcher(url));
   const user = data?.user;
 
-  if (!data) return null;
+  // Until the session arrives, hold the space with an invisible "Sign in" so the
+  // header doesn't shift when the real link appears.
+  if (!data) return <span className="nav-placeholder" aria-hidden="true">Sign in</span>;
   if (!user) return <Link href="/signin">Sign in</Link>;
   return (
     <>
       {user.role === 'staff' && <Link href="/kitchen">Kitchen</Link>}
       <form action={signOut} className="inline-form">
-        <button type="submit" className="link-button">Sign out ({user.name})</button>
+        <button type="submit" className="link-button">
+          Sign out<span className="nav-user">{` (${user.name})`}</span>
+        </button>
       </form>
     </>
   );

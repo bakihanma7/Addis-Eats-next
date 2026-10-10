@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { dishes } from '@/lib/dishes';
 import { CartContents } from '../cart-ui';
 import { NO_INDEX } from '@/lib/seo';
@@ -15,10 +14,12 @@ export default function CartPage() {
   const dishData = dishes.map(({ id, name, price }) => ({ id, name, price }));
 
   return (
-    <div>
-      <h1>Your cart</h1>
+    <div className="page page-narrow">
+      <header className="page-head">
+        <p className="eyebrow">Your order</p>
+        <h1>Your cart</h1>
+      </header>
       <CartContents dishes={dishData} />
-      <Link href="/checkout">Go to checkout</Link>
     </div>
   );
 }
