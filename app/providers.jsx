@@ -29,7 +29,10 @@ export function Providers({ children }) {
       delete next[id];
       return next;
     });
-  const clear = () => setItems({});
+  const clear = () => {
+    setItems({});
+    document.cookie = `${CART_COOKIE}=; path=/; max-age=0`;
+  };
   const count = Object.values(items).reduce((a, b) => a + b, 0);
 
   return <CartContext.Provider value={{ items, add, remove, clear, count, ready: hydrated }}>{children}</CartContext.Provider>;

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import useSWR from 'swr';
 import { fetcher } from '@/lib/fetcher';
 import { signOut } from './actions';
+import { useCart } from './providers';
 
 // Client leaf for the header: who is signed in. The root layout stays static
 // (no cookies() read), so the session is fetched here instead. The pathname is
@@ -14,6 +15,7 @@ export function AuthNav() {
   const pathname = usePathname();
   const { data } = useSWR(['/api/session', pathname], ([url]) => fetcher(url));
   const user = data?.user;
+  const { clear } = useCart();
 
   // Until the session arrives, hold the space with an invisible "Sign in" so the
   // header doesn't shift when the real link appears.
@@ -22,7 +24,13 @@ export function AuthNav() {
   return (
     <>
       {user.role === 'staff' && <Link href="/kitchen">Kitchen</Link>}
-      <form action={signOut} className="inline-form">
+      <form
+        action={async () => {
+          clear();
+          await signOut();
+        }}
+        className="inline-form"
+      >
         <button type="submit" className="link-button">
           Sign out<span className="nav-user">{` (${user.name})`}</span>
         </button>
