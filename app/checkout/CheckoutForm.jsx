@@ -8,8 +8,6 @@ import { useCart } from '../providers';
 
 const initialState = { status: 'idle' };
 
-// Client leaf: needs useActionState (pending flag + returned errors) and the
-// cart context (to empty the browser-side cart after a successful order).
 export function CheckoutForm() {
   const [state, formAction, pending] = useActionState(placeOrder, initialState);
   const { clear } = useCart();
@@ -22,7 +20,6 @@ export function CheckoutForm() {
     }
   }, [state]);
 
-  // With JavaScript disabled the effect above never runs, so show a plain link.
   if (state.status === 'success') {
     return (
       <p className="empty">
